@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>VTT to SRT Converter | wk-18k</title>
+    <meta name="description" content="VTT to SRT Converter">
+    <meta name="keywords" content="VTT to SRT, VTT to SRT Converter, convert vtt to srt">
+    <meta name="robots" content="index">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="canonical" href="https://github.com/watchakorn-18k">
+    <link rel="icon" type="image/png"
+        href="https://media.discordapp.net/attachments/585068497495654413/1068910994677571595/favicon-16x16.png"
+        sizes="16x16">
+    <link rel="icon" type="image/png"
+        href="https://media.discordapp.net/attachments/585068497495654413/1068910994916651110/favicon-32x32.png"
+        sizes="32x32">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@latest/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@100;400;700&display=swap" rel="stylesheet">
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://github.com/watchakorn-18k">
+    <meta property="og:title" content="VTT to SRT Converter">
+    <meta property="og:description" content="VTT to SRT Converter">
+    <meta property="og:image"
+        content="https://cdn.discordapp.com/attachments/585068497495654413/1068912450495332472/image.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://github.com/watchakorn-18k">
+    <meta property="twitter:title" content="VTT to SRT Converter">
+    <meta property="twitter:description" content="VTT to SRT Converter">
+    <meta property="twitter:image"
+        content="https://cdn.discordapp.com/attachments/585068497495654413/1068912450495332472/image.png">
+    <style>
+        body {
+            font-family: 'Sarabun', sans-serif;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="flex justify-end py-2 bg-white shadow-sm">
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-5 rounded-full"
+            onClick="changeLanguage('en')">English</button>
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+            onClick="changeLanguage('th')">ภาษาไทย</button>
+    </div>
+    <div class="flex justify-center items-center h-screen">
+        <div class="container mx-auto">
+            <h1 class="text-2xl font-bold text-center mb-4" id="title-name">แปลงไฟล์ .vtt เป็น .srt</h1>
+            <div class="flex justify-center">
+                <label for="fileInput"
+                    class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 cursor-pointer"
+                    id="file-input-name">
+                    เลือกไฟล์
+                </label>
+
+                <input type="file" class="hidden" accept=".vtt" id="fileInput" onchange="convertFile()">
+            </div>
+            <div class="text-center my-4" id="downloadLinkContainer">
+                <!-- download link will be added here -->
+            </div>
+        </div>
+    </div>
+    <script>
+        let convertFile = () => {
+            var file = document.getElementById("fileInput").files[0];
+            var reader = new FileReader();
+            reader.onload = function () {
+                var vttText = reader.result;
+                var srtText = vttToSrt(vttText);
+                let choosFile = document.getElementById('file-input-name');
+                choosFile.style.display = "none";
+                downloadSrtFile(srtText, file.name);
+            }
+            reader.readAsText(file);
+        }
+
+        let vttToSrt = (vttText) => {
+            var srtText = "";
+            var lines = vttText.split("\n");
+            var i = 0;
+            let numberline = 1;
+            while (i < lines.length) {
+                if (lines[i].indexOf("-->") !== -1) {
+                    // this is a timing line
+                    var timing = lines[i].split(" --> ");
+                    var start = timing[0].replace(".", ",");
+                    var end = timing[1].replace(".", ",");
+                    i++;
+                    var text = "";
+                    while (i < lines.length && lines[i] !== "") {
+                        text += lines[i] + "\n";
+                        i++;
+                    }
+                    srtText += numberline + '\n' + start + " --> " + end + "\n" + text + "\n";
+                    numberline++
+                }
+                i++;
+            }
+            return srtText;
+        }
+        let text_dwl = "ดาวน์โหลด";
+        let downloadSrtFile = (srtText, fileName) => {
+            var blob = new Blob([srtText], { type: "text/plain" });
+            var link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = fileName.replace(".vtt", ".srt");
+            link.classList.add("bg-blue-500", "text-white", "py-2", "px-4", "rounded-lg", "hover:bg-blue-600", "cursor-pointer", "text-center", "mx-auto");
+            link.id = "download-link"
+            link.innerHTML = text_dwl;
+            document.getElementById("downloadLinkContainer").appendChild(link);
+        }
+        let changeLanguage = (lang) => {
+            if (lang === 'en') {
+                document.getElementById('title-name').innerHTML = 'Convert .vtt to .srt';
+                document.getElementById('file-input-name').innerHTML = 'Choose File';
+                document.getElementById('download-link').innerHTML = 'Download';
+                text_dwl = "Download"
+            } else if (lang === 'th') {
+                document.getElementById('title-name').innerHTML = 'แปลงไฟล์ .vtt เป็น .srt';
+                document.getElementById('file-input-name').innerHTML = 'เลือกไฟล์';
+                document.getElementById('download-link').innerHTML = 'ดาวน์โหลด';
+                text_dwl = "ดาวน์โหลด"
+            }
+        }
+    </script>
+</body>
+
+</html>
