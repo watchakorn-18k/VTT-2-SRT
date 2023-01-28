@@ -13,12 +13,6 @@ A simple web app that allows you to convert .vtt subtitle files to .srt format.
 - Customizable filename
 - Download converted file
 
-## Installation
-
-1. Clone or download this repository
-2. Run `npm install` to install the dependencies
-3. Start the development server with `npm start`
-
 ## Usage
 
 1. Select a .vtt file using the file input
