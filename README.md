@@ -12,6 +12,7 @@ A simple web app that allows you to convert .vtt subtitle files to .srt format.
 - Accepts only .vtt files
 - Customizable filename
 - Download converted file
+- Drag drop file
 
 ## Usage
 

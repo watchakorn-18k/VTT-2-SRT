@@ -36,6 +36,7 @@
             font-family: 'Sarabun', sans-serif;
         }
     </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons@latest/iconfont/tabler-icons.min.css">
 
 </head>
 
@@ -50,32 +51,54 @@
         <div class="container mx-auto">
             <h1 class="text-2xl font-bold text-center mb-4" id="title-name">แปลงไฟล์ .vtt เป็น .srt</h1>
             <div class="flex justify-center">
-                <label for="fileInput"
-                    class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 cursor-pointer"
-                    id="file-input-name">
-                    เลือกไฟล์
-                </label>
+                <div class="max-w-xl">
+                    <label
+                        class="flex justify-center w-full h-32 px-4 transition bg-white border-2 border-gray-300 border-dashed rounded-md appearance-none cursor-pointer hover:border-gray-400 focus:outline-none"
+                        ondragover="allowDrop(event)" ondrop="drop(event)">
+                        <span class="flex items-center space-x-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-600" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                            </svg>
+                            <span class="font-medium text-gray-600">
+                                ลากไฟล์มาวางหรือ
+                                <span class="text-blue-600 underline">กดเรียกดู</span>
+                            </span>
+                        </span>
+                        <input type="file" accept=".vtt" id="fileInput" class="hidden" onchange="convertFile()">
+                    </label>
+                </div>
 
-                <input type="file" class="hidden" accept=".vtt" id="fileInput" onchange="convertFile()">
+            </div>
+            <div class="text-center my-4">
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4  rounded-full"
+                    onClick="window.location.reload();"><i class="ti ti-refresh"></i></button>
             </div>
             <div class="text-center my-4" id="downloadLinkContainer">
                 <!-- download link will be added here -->
             </div>
+
         </div>
     </div>
+
     <script>
-        let convertFile = () => {
-            var file = document.getElementById("fileInput").files[0];
-            var reader = new FileReader();
+        let allowDrop = (event) => {
+            event.preventDefault();
+        };
+
+        let drop = (event) => {
+            event.preventDefault();
+            let file = event.dataTransfer.files[0];
+            let reader = new FileReader();
             reader.onload = function () {
-                var vttText = reader.result;
-                var srtText = vttToSrt(vttText);
+                let vttText = reader.result;
+                let srtText = vttToSrt(vttText);
                 let choosFile = document.getElementById('file-input-name');
-                choosFile.style.display = "none";
                 downloadSrtFile(srtText, file.name);
-            }
+            };
             reader.readAsText(file);
-        }
+        };
 
         let vttToSrt = (vttText) => {
             var srtText = "";
@@ -125,6 +148,9 @@
                 text_dwl = "ดาวน์โหลด"
             }
         }
+        let input = document.getElementById("fileInput");
+        input.addEventListener("dragover", allowDrop);
+        input.addEventListener("drop", drop);
     </script>
 </body>
 
