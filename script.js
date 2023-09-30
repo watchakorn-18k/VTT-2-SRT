@@ -51,7 +51,7 @@ let vttToSrt = (vttText) => {
             }
         }
     }
-    console.log(lines);
+    // console.log(lines);
 
     // while (i < result.length) {
     //     if (result[i].indexOf("-->") !== -1) {
