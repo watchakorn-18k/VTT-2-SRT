@@ -3,8 +3,8 @@ result = []
 
 
 for i,k in enumerate(test):
-    test[i] = test[i].replace('\r', '\n').replace('.',',')
-    if k.startswith('00'):
-        result.append(''.join(str(e) for e in test[i:i+2])+"\n")
-
+    for i,k in enumerate(test):
+        test[i] = test[i].replace('\r', '\n').replace('.',',')
+        if k.startswith('00'):
+            result.append('\n'.join(str(e) for e in test[i:i+2])+"\n")
 print(result)

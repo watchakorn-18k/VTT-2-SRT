@@ -35,13 +35,23 @@ let vttToSrt = (vttText) => {
     let numberline = 1;
     let result = []
 
-    for (let i = 0; i < lines.length; i++) {
-        lines[i] = lines[i].replace('\r', '\n').replace('.', ',').replace('.', ',');
-        console.log(lines[i]);
-        if (lines[i].startsWith('00')) {
-            result.push(lines.slice(i, i + 2).join('') + '\n\n');
+    if (lines.includes('Language: en')) {
+        for (let i = 0; i < lines.length; i++) {
+            lines[i] = lines[i].replace('\r', '\n').replace('.', ',').replace('.', ',');
+            if (lines[i].startsWith('00')) {
+                result.push(lines.slice(i, i + 2).join('\n') + '\n\n');
+            }
+        }
+        
+    } else {
+        for (let i = 0; i < lines.length; i++) {
+            lines[i] = lines[i].replace('\r', '\n').replace('.', ',').replace('.', ',');
+            if (lines[i].startsWith('00')) {
+                result.push(lines.slice(i, i + 2).join('') + '\n\n');
+            }
         }
     }
+    console.log(lines);
 
     // while (i < result.length) {
     //     if (result[i].indexOf("-->") !== -1) {
@@ -61,7 +71,7 @@ let vttToSrt = (vttText) => {
     //     i++;
     // }
     let resultString = result.join("");
-    console.log(resultString);
+    // console.log(resultString);
     return resultString;
 }
 let text_dwl = "ดาวน์โหลด";
